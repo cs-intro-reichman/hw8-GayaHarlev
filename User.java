@@ -43,35 +43,87 @@
 
     /** If this user follows the given name, returns true; otherwise returns false. */
     public boolean follows(String name) {
-        //// Replace the following statement with your code
+        if(this.getfCount() ==0){
+            return false;
+        }
+        else{
+            for(int i = 0; i<this.getfCount(); i++){
+                if(this.follows[i] != null && name.toLowerCase().equals(this.follows[i].toLowerCase())){
+                    return true;
+                }
+            }
+        }
+    
         return false;
     }
     /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
-        //// Replace the following statement with your code
-        return false;
+        if(this.getName().toLowerCase().equals(name.toLowerCase()) || this.fCount==this.maxfCount){
+             return false;
+            }
+            if(!follows(name)){
+                follows[this.fCount] = name;
+                this.fCount++;
+                return true;           
+            }   
+            return false;
+        
     }
 
     /** Removes the given name from the follows list of this user. If successful, returns true.
      *  If the name is not in the list, does nothing and returns false. */
     public boolean removeFollowee(String name) {
-        //// Replace the following statement with your code
-        return false;
-    }
+            int place = 0;
+            boolean bool = false;
+            if(!this.follows(name)){
+                return bool;
+            }
+            if(this.fCount!=0){
+                for(int i = 0; i<this.fCount; i++){
+                    if(name.equals(this.follows[i])){
+                        place=i;
+                        bool = true;
+                        break;
+                    }
+                }
+            }
+            if(bool){
+                if(place==this.fCount-1){
+                    this.follows[place] = "";
+                    this.fCount--;
+                    return true;
+                }
+                else{
+                    for(int i=place; i<this.fCount-1; i++){
+                        this.follows[i] = this.follows[i+1];
+                    }
+                    this.follows[this.fCount-1]=null;
+                    this.fCount--;
+                    return true;
+                }        
+            }
+            return false;
+        }
 
     /** Counts the number of users that both this user and the other user follow.
     /*  Notice: This is the size of the intersection of the two follows lists. */
     public int countMutual(User other) {
-         //// Replace the following statement with your code
-        return 0;
+        if(this.getfCount() == 0 || other.getfCount() == 0){
+            return 0;
+        }
+        int counter = 0;
+        for(int i=0; i<this.getfCount(); i++){
+            if(other.follows(this.follows[i])){
+                counter++;
+            }
+        }
+        return counter;
     }
-
     /** Checks is this user is a friend of the other user.
      *  (if two users follow each other, they are said to be "friends.") */
     public boolean isFriendOf(User other) {
-        //// Replace the following statement with your code
-        return false;
+        return (this.follows(other.getName())&&other.follows(this.getName()));
     }
     /** Returns this user's name, and the names that s/he follows. */
     public String toString() {
